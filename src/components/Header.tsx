@@ -33,7 +33,7 @@ const socials = [
 ];
 
 const Header = () => {
-  const handleClick = (anchor) => () => {
+  const handleClick = (anchor: any) => () => {
     const id = `${anchor}-section`;
     const element = document.getElementById(id);
     if (element) {
@@ -63,9 +63,7 @@ const Header = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <nav>
-            {/* Add social media links based on the `socials` data */}
-          </nav>
+          <nav>{/* Add social media links based on the `socials` data */}</nav>
           <nav>
             <HStack spacing={8}>
               {/* Add links to Projects and Contact me section */}

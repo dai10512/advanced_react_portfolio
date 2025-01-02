@@ -7,14 +7,25 @@ import {
 } from "@chakra-ui/react";
 import { useAlertContext } from "../context/alertContext";
 import { useRef } from "react";
+import { FocusableElement } from "@chakra-ui/utils";
 
 /**
  * This is a global component that uses context to display a global alert message.
  */
 function Alert() {
-  const { isOpen, type, message, onClose } = useAlertContext();
-  const cancelRef = useRef();
-  const isSuccess = type === "success"
+  const {
+    isOpen,
+    type,
+    message,
+    onClose,
+  }: {
+    isOpen: boolean;
+    type: String;
+    message: String;
+    onClose: () => void;
+  } = useAlertContext();
+  const cancelRef = useRef<FocusableElement>(null as unknown as FocusableElement);
+  const isSuccess = type === "success";
 
   return (
     <AlertDialog
@@ -23,9 +34,12 @@ function Alert() {
       onClose={onClose}
     >
       <AlertDialogOverlay>
-        <AlertDialogContent py={4} backgroundColor={isSuccess ? '#81C784' : '#FF8A65'}>
+        <AlertDialogContent
+          py={4}
+          backgroundColor={isSuccess ? "#81C784" : "#FF8A65"}
+        >
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            {isSuccess ? 'All good!' : 'Oops!'}
+            {isSuccess ? "All good!" : "Oops!"}
           </AlertDialogHeader>
           <AlertDialogBody>{message}</AlertDialogBody>
         </AlertDialogContent>
