@@ -41,6 +41,9 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^2.7.1"
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "prettier": "^2.7.1",
+    "typescript": "^5.7.2"
   }
 }
