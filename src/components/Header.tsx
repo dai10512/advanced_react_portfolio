@@ -33,7 +33,8 @@ const socials = [
 ];
 
 const Header = () => {
-  const handleClick = (anchor: any) => () => {
+  const handleClick = (anchor: string) => () => {
+    console.log(anchor);
     const id = `${anchor}-section`;
     const element = document.getElementById(id);
     if (element) {
@@ -63,10 +64,33 @@ const Header = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <nav>{/* Add social media links based on the `socials` data */}</nav>
           <nav>
             <HStack spacing={8}>
-              {/* Add links to Projects and Contact me section */}
+              {socials.map((e) => {
+                return (
+                  <a href={e.url} key={e.url}>
+                    <FontAwesomeIcon icon={e.icon} size="2x" />
+                  </a>
+                );
+              })}
+            </HStack>
+          </nav>
+          <nav>
+            <HStack spacing={8}>
+              <a
+                // href={"/#projects-section"}
+                key={"projects-section"}
+                onClick={handleClick("projects")}
+              >
+                Projects
+              </a>
+              <a
+                // href={"/#contactme-section"}
+                key={"contact-me"}
+                onClick={handleClick("contactme")}
+              >
+                Contact me
+              </a>
             </HStack>
           </nav>
         </HStack>
