@@ -1,8 +1,11 @@
 import {
+  Badge,
+  Box,
   CardBody,
   Heading,
   HStack,
   Image,
+  StackDivider,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -20,11 +23,38 @@ const Card = ({
   imageSrc: string;
 }) => {
   return (
-    <ChakraCard>
-      <CardBody>
-        <Text>View a summary of all your customers over the last month.</Text>
-      </CardBody>
-    </ChakraCard>
+    <VStack
+      spacing={3}
+      align="stretch"
+      color={"black"}
+      bg="white"
+      borderRadius="xl"
+    >
+      <Image src={imageSrc} alt={title} borderRadius="xl"/>
+
+      <Box p="4">
+        <VStack
+          // divider={<StackDivider borderColor="gray.200" />}
+          spacing={4}
+          align="stretch"
+          color={"black"}
+        >
+          spacing={3}
+          <Heading as="h4" size="md">
+            {title}
+          </Heading>
+          <Text fontSize="sm" color="gray.500">
+            {description}
+          </Text>
+          <HStack>
+            <Text fontSize="sm" color="black">
+              See More
+            </Text>
+            <FontAwesomeIcon icon={faArrowRight} size="1x" />
+          </HStack>
+        </VStack>
+      </Box>
+    </VStack>
   );
 };
 
