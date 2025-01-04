@@ -29,10 +29,15 @@ const LandingSection = () => {
       comment: "",
     },
     onSubmit: (values) => {
+      console.log("Submitting form", values);
       submit({ url: "https://api.example.com", data: values });
     },
     validationSchema: Yup.object({}),
   });
+  const handleOnChange = (e: any) => {
+    console.log(e.target.value);
+    formik.getFieldProps(e.target.name).onChange(e);
+  };
 
   return (
     <FullScreenSection
@@ -54,6 +59,7 @@ const LandingSection = () => {
                   id="firstName"
                   name="firstName"
                   value={formik.values.firstName}
+                  onChange={handleOnChange}
                 />
                 <FormErrorMessage />
               </FormControl>
@@ -64,12 +70,18 @@ const LandingSection = () => {
                   name="email"
                   type="email"
                   value={formik.values.email}
+                  onChange={handleOnChange}
                 />
                 <FormErrorMessage />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="type">Type of enquiry</FormLabel>
-                <Select id="type" name="type" value={formik.values.type}>
+                <Select
+                  id="type"
+                  name="type"
+                  value={formik.values.type}
+                  onChange={handleOnChange}
+                >
                   <option value="hireMe">Freelance project proposal</option>
                   <option value="openSource">
                     Open source consultancy session
@@ -84,6 +96,7 @@ const LandingSection = () => {
                   name="comment"
                   height={250}
                   value={formik.values.comment}
+                  onChange={handleOnChange}
                 />
                 <FormErrorMessage />
               </FormControl>
