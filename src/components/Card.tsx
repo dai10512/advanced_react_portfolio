@@ -9,8 +9,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { Card } from "@chakra-ui/react";
-const CustomCard = ({
+import { Card as ChakraCard } from "@chakra-ui/react";
+const Card = ({
   title,
   description,
   imageSrc,
@@ -20,12 +20,12 @@ const CustomCard = ({
   imageSrc: string;
 }) => {
   return (
-    <Card>
+    <ChakraCard>
       <CardBody>
         <Text>View a summary of all your customers over the last month.</Text>
       </CardBody>
-    </Card>
+    </ChakraCard>
   );
 };
 
-export default CustomCard;
+export default Card;
