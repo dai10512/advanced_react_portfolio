@@ -1,18 +1,12 @@
 import {
-  Badge,
-  Box,
-  CardBody,
   Heading,
   HStack,
   Image,
-  StackDivider,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
-import { Card as ChakraCard } from "@chakra-ui/react";
 const Card = ({
   title,
   description,
@@ -32,12 +26,12 @@ const Card = ({
     >
       <Image src={imageSrc} alt={title} borderRadius="xl"/>
 
-      <Box p="4">
+      {/* <Box p="4"> */}
         <VStack
-          // divider={<StackDivider borderColor="gray.200" />}
           spacing={4}
           align="stretch"
           color={"black"}
+          p ="4"
         >
           spacing={3}
           <Heading as="h4" size="md">
@@ -53,7 +47,7 @@ const Card = ({
             <FontAwesomeIcon icon={faArrowRight} size="1x" />
           </HStack>
         </VStack>
-      </Box>
+      {/* </Box> */}
     </VStack>
   );
 };

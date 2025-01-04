@@ -9,7 +9,6 @@ const wait = ({ ms }: { ms: number }) =>
  */
 const useSubmit = () => {
   const [isLoading, setLoading] = useState(false);
-  // const [response, setResponse] = useState<>(null);
   const [response, setResponse] = useState<{
     type: string;
     message: string;
@@ -20,9 +19,7 @@ const useSubmit = () => {
     data,
   }: {
     url: string;
-    data: {
-      firstName: string;
-    };
+    data: any;
   }) => {
     const random = Math.random();
     setLoading(true);
@@ -35,6 +32,7 @@ const useSubmit = () => {
         type: "success",
         message: `Thanks for your submission ${data.firstName}, we will get back to you shortly!`,
       });
+      
     } catch (error) {
       setResponse({
         type: "error",

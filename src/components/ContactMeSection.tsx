@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import {
   Box,
@@ -12,18 +12,25 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
-import * as Yup from 'yup';
+import * as Yup from "yup";
 import FullScreenSection from "./FullScreenSection";
 import useSubmit from "../hooks/useSubmit";
-import {useAlertContext} from "../context/alertContext";
+import { useAlertContext } from "../context/alertContext";
 
 const LandingSection = () => {
-  // const {isLoading, response, submit} = useSubmit();
-  // const { onOpen } = useAlertContext();
+  const { isLoading, response, submit } = useSubmit();
+  const { onOpen: boolean } = useAlertContext();
 
   const formik = useFormik({
-    initialValues: {},
-    onSubmit: (values) => {},
+    initialValues: {
+      firstName: "",
+      email: "",
+      type: "",
+      comment: "",
+    },
+    onSubmit: (values) => {
+      submit({ url: "https://api.example.com", data: values });
+    },
     validationSchema: Yup.object({}),
   });
 
@@ -46,8 +53,9 @@ const LandingSection = () => {
                 <Input
                   id="firstName"
                   name="firstName"
+                  value={formik.values.firstName}
                 />
-                <FormErrorMessage></FormErrorMessage>
+                <FormErrorMessage />
               </FormControl>
               <FormControl isInvalid={false}>
                 <FormLabel htmlFor="email">Email Address</FormLabel>
@@ -55,12 +63,13 @@ const LandingSection = () => {
                   id="email"
                   name="email"
                   type="email"
+                  value={formik.values.email}
                 />
-                <FormErrorMessage></FormErrorMessage>
+                <FormErrorMessage />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="type">Type of enquiry</FormLabel>
-                <Select id="type" name="type">
+                <Select id="type" name="type" value={formik.values.type}>
                   <option value="hireMe">Freelance project proposal</option>
                   <option value="openSource">
                     Open source consultancy session
@@ -74,8 +83,9 @@ const LandingSection = () => {
                   id="comment"
                   name="comment"
                   height={250}
+                  value={formik.values.comment}
                 />
-                <FormErrorMessage></FormErrorMessage>
+                <FormErrorMessage />
               </FormControl>
               <Button type="submit" colorScheme="purple" width="full">
                 Submit
