@@ -16,7 +16,6 @@ import * as Yup from "yup";
 import FullScreenSection from "./FullScreenSection";
 import useSubmit from "../hooks/useSubmit";
 import { useAlertContext } from "../context/alertContext";
-import Alert from "./Alert";
 
 const LandingSection = () => {
   const { isLoading, response, submit } = useSubmit();
@@ -34,7 +33,7 @@ const LandingSection = () => {
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required("Required"),
-      email: Yup.string().required("Required"),
+      email: Yup.string().email("Invalid email").required("Required"),
       type: Yup.string().required("Required"),
       comment: Yup.string().required("Required"),
     }),
@@ -46,6 +45,7 @@ const LandingSection = () => {
   };
 
   const handleSubmit = (e: any) => {
+    console.log("handleSubmit", isLoading);
     if (isLoading) {
       return;
     }
@@ -54,7 +54,7 @@ const LandingSection = () => {
   };
 
   useEffect(() => {
-    formik.handleSubmit();
+    console.log("touched firstname", formik.touched.firstName);
     if (!response) {
       return;
     }
@@ -79,7 +79,10 @@ const LandingSection = () => {
           <form onSubmit={handleSubmit}>
             <VStack spacing={4}>
               <FormControl
-                isInvalid={formik.getFieldProps("firstName").checked}
+                isInvalid={
+                  (formik.touched.firstName ?? false) &&
+                  formik.errors.firstName !== undefined
+                }
               >
                 <FormLabel htmlFor="firstName">Name</FormLabel>
                 <Input
@@ -88,9 +91,14 @@ const LandingSection = () => {
                   value={formik.values.firstName}
                   onChange={handleOnChange}
                 />
-                <FormErrorMessage>required</FormErrorMessage>
+                <FormErrorMessage>{formik.errors.firstName}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={formik.getFieldProps("email").checked}>
+              <FormControl
+                isInvalid={
+                  (formik.touched.email ?? false) &&
+                  (formik.errors.email ?? "") !== ""
+                }
+              >
                 <FormLabel htmlFor="email">Email Address</FormLabel>
                 <Input
                   id="email"
@@ -99,7 +107,7 @@ const LandingSection = () => {
                   value={formik.values.email}
                   onChange={handleOnChange}
                 />
-                <FormErrorMessage>required</FormErrorMessage>
+                <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="type">Type of enquiry</FormLabel>
@@ -116,7 +124,12 @@ const LandingSection = () => {
                   <option value="other">Other</option>
                 </Select>
               </FormControl>
-              <FormControl isInvalid={formik.getFieldProps("comment").checked}>
+              <FormControl
+                isInvalid={
+                  (formik.touched.comment ?? false) &&
+                  formik.errors.comment !== undefined
+                }
+              >
                 <FormLabel htmlFor="comment">Your message</FormLabel>
                 <Textarea
                   id="comment"
