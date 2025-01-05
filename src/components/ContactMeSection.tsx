@@ -96,7 +96,7 @@ const LandingSection = () => {
               <FormControl
                 isInvalid={
                   (formik.touched.email ?? false) &&
-                  (formik.errors.email ?? "") !== ""
+                  formik.errors.email !== undefined
                 }
               >
                 <FormLabel htmlFor="email">Email Address</FormLabel>
