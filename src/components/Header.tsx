@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -33,6 +33,8 @@ const socials = [
 ];
 
 const Header = () => {
+  const [lastScrollY, setLastScrollY] = useState<number>(0);
+  const [isScollDown, setIsScrollDown] = useState<boolean | null>(null);
   const handleClick = (anchor: string) => () => {
     console.log(anchor);
     const id = `${anchor}-section`;
@@ -45,14 +47,35 @@ const Header = () => {
     }
   };
 
+  useEffect(() => {
+    console.log("useeffect");
+    const handleScroll = () => {
+      console.log(window.scrollY, lastScrollY);
+      if (window.scrollY > lastScrollY) {
+        setIsScrollDown(true);
+      }
+      if (window.scrollY < lastScrollY) {
+        setIsScrollDown(false);
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [window.scrollY]);
+
   return (
     <Box
       position="fixed"
-      top={0}
+      top={isScollDown ? -200 : 0}
+      // top={0}
       left={0}
       right={0}
-      translateY={0}
-      transitionProperty="transform"
+      // translateY={isScollDown ? -200 : 0}
+      // transitionProperty="transform"
       transitionDuration=".3s"
       transitionTimingFunction="ease-in-out"
       backgroundColor="#18181b"
@@ -77,16 +100,10 @@ const Header = () => {
           </nav>
           <nav>
             <HStack spacing={8}>
-              <a
-                key={"projects-section"}
-                onClick={handleClick("projects")}
-              >
+              <a key={"projects-section"} onClick={handleClick("projects")}>
                 Projects
               </a>
-              <a
-                key={"contact-me"}
-                onClick={handleClick("contactme")}
-              >
+              <a key={"contact-me"} onClick={handleClick("contactme")}>
                 Contact me
               </a>
             </HStack>
