@@ -33,8 +33,9 @@ const socials = [
 ];
 
 const Header = () => {
-  const [lastScrollY, setLastScrollY] = useState<number>(0);
+  const lastScrollY = useRef<number>(window.scrollY);
   const [isScollDown, setIsScrollDown] = useState<boolean | null>(null);
+
   const handleClick = (anchor: string) => () => {
     console.log(anchor);
     const id = `${anchor}-section`;
@@ -47,25 +48,24 @@ const Header = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("useeffect");
-    const handleScroll = () => {
-      console.log(window.scrollY, lastScrollY);
-      if (window.scrollY > lastScrollY) {
-        setIsScrollDown(true);
-      }
-      if (window.scrollY < lastScrollY) {
-        setIsScrollDown(false);
-      }
-      setLastScrollY(window.scrollY);
-    };
+  const handleScroll = () => {
+    console.log(window.scrollY, lastScrollY.current);
+    if (window.scrollY > lastScrollY.current) {
+      setIsScrollDown(true);
+    }
+    if (window.scrollY < lastScrollY.current) {
+      setIsScrollDown(false);
+    }
+    lastScrollY.current = window.scrollY;
+  };
 
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [window.scrollY]);
+  }, []);
 
   return (
     <Box
