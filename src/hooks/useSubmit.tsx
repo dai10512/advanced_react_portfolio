@@ -21,6 +21,7 @@ const useSubmit = () => {
     url: string;
     data: any;
   }) => {
+    console.log("Submitting form", url,data);
     const random = Math.random();
     setLoading(true);
     try {
@@ -32,7 +33,6 @@ const useSubmit = () => {
         type: "success",
         message: `Thanks for your submission ${data.firstName}, we will get back to you shortly!`,
       });
-      
     } catch (error) {
       setResponse({
         type: "error",

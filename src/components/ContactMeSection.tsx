@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useFormik } from "formik";
+import React, { use, useEffect } from "react";
+import { useFormik, Form } from "formik";
 import {
   Box,
   Button,
@@ -16,28 +16,53 @@ import * as Yup from "yup";
 import FullScreenSection from "./FullScreenSection";
 import useSubmit from "../hooks/useSubmit";
 import { useAlertContext } from "../context/alertContext";
+import Alert from "./Alert";
 
 const LandingSection = () => {
   const { isLoading, response, submit } = useSubmit();
-  const { onOpen: boolean } = useAlertContext();
+  const { onOpen } = useAlertContext();
 
   const formik = useFormik({
     initialValues: {
       firstName: "",
       email: "",
-      type: "",
+      type: "hireMe",
       comment: "",
     },
     onSubmit: (values) => {
-      console.log("Submitting form", values);
       submit({ url: "https://api.example.com", data: values });
     },
-    validationSchema: Yup.object({}),
+    validationSchema: Yup.object({
+      firstName: Yup.string().required("Required"),
+      email: Yup.string().required("Required"),
+      type: Yup.string().required("Required"),
+      comment: Yup.string().required("Required"),
+    }),
   });
+
   const handleOnChange = (e: any) => {
-    console.log(e.target.value);
+    console.log(e.target.name, e.target.value);
     formik.getFieldProps(e.target.name).onChange(e);
   };
+
+  const handleSubmit = (e: any) => {
+    if (isLoading) {
+      return;
+    }
+    e.preventDefault();
+    formik.handleSubmit();
+  };
+
+  useEffect(() => {
+    formik.handleSubmit();
+    if (!response) {
+      return;
+    }
+    onOpen(response.type, response.message);
+    if (response.type === "success") {
+      formik.resetForm();
+    }
+  }, [response]);
 
   return (
     <FullScreenSection
@@ -51,9 +76,11 @@ const LandingSection = () => {
           Contact me
         </Heading>
         <Box p={6} rounded="md" w="100%">
-          <form>
+          <form onSubmit={handleSubmit}>
             <VStack spacing={4}>
-              <FormControl isInvalid={false}>
+              <FormControl
+                isInvalid={formik.getFieldProps("firstName").checked}
+              >
                 <FormLabel htmlFor="firstName">Name</FormLabel>
                 <Input
                   id="firstName"
@@ -61,9 +88,9 @@ const LandingSection = () => {
                   value={formik.values.firstName}
                   onChange={handleOnChange}
                 />
-                <FormErrorMessage />
+                <FormErrorMessage>required</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={false}>
+              <FormControl isInvalid={formik.getFieldProps("email").checked}>
                 <FormLabel htmlFor="email">Email Address</FormLabel>
                 <Input
                   id="email"
@@ -72,7 +99,7 @@ const LandingSection = () => {
                   value={formik.values.email}
                   onChange={handleOnChange}
                 />
-                <FormErrorMessage />
+                <FormErrorMessage>required</FormErrorMessage>
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="type">Type of enquiry</FormLabel>
@@ -89,7 +116,7 @@ const LandingSection = () => {
                   <option value="other">Other</option>
                 </Select>
               </FormControl>
-              <FormControl isInvalid={false}>
+              <FormControl isInvalid={formik.getFieldProps("comment").checked}>
                 <FormLabel htmlFor="comment">Your message</FormLabel>
                 <Textarea
                   id="comment"
@@ -98,7 +125,7 @@ const LandingSection = () => {
                   value={formik.values.comment}
                   onChange={handleOnChange}
                 />
-                <FormErrorMessage />
+                <FormErrorMessage>required</FormErrorMessage>
               </FormControl>
               <Button type="submit" colorScheme="purple" width="full">
                 Submit
